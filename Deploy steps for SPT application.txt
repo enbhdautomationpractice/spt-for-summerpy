@@ -1,0 +1,53 @@
+----- Create the Docker images before you deploy on AWS -----
+Read: https://hub.docker.com/r/adoptopenjdk/openjdk8      
+And read: https://github.com/nodejs/docker-node/blob/master/README.md#how-to-use-this-image
+
+super-protein-tracker$ mvn clean install                                                                                   
+super-protein-tracker$ docker build -t enbhdautomationpractice/super-protein-tracker-summerpy . 
+super-protein-tracker$ docker push enbhdautomationpractice/super-protein-tracker-summerpy
+
+super-protein-tracker-ui$ ng build --prod
+super-protein-tracker-ui$ docker build -t enbhdautomationpractice/super-protein-tracker-ui-summerpy . 
+super-protein-tracker-ui$ docker push enbhdautomationpractice/super-protein-tracker-ui-summerpy
+
+
+
+-------------- DEPLOY on AWS -----------------
+
+Connect to AWS:
+$ ssh -i .ssh/keypair.pem ubuntu@<aws_ubuntu_ip>
+$ sudo su
+
+You may need to add a swap file (https://linuxize.com/post/create-a-linux-swap-file/)
+$ fallocate -l 2G /swapfile
+$ chmod 600 /swapfile
+$ mkswap /swapfile
+$ swapon /swapfile
+Edit /etc/fstab with vi. Add:
+/swapfile swap swap defaults 0 0
+
+
+1. Install Docker
+https://docs.docker.com/install/linux/docker-ce/ubuntu/ -> Install Docker Engine - Community
+
+2. Create network for MySQL and SPT application
+$ docker network create spt_network_summerpy
+
+3. Get the MySQL image and run it:
+$ docker run -d --name spt-mysql-summerpy --network=spt_network_summerpy -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql
+<wait 10 seconds>
+$ docker exec -it spt-mysql-summerpy mysql --user=root --password=root -e "create database protein;"
+
+3. Get the SPT backend image and run it:
+cmd> docker run -d --name spt-rest-summerpy --network=spt_network_summerpy -p 8082:8082 enbhdautomationpractice/super-protein-tracker-summerpy
+
+Tests for backend:
+http://<aws_ubuntu_ip>:8082/api/v1/ProteinTrackers/ping
+http://<aws_ubuntu_ip>:8082/api/v1/ProteinTrackers
+
+4. Get the SPT frontend image and run it:
+cmd> docker run -d --name spt-ui-summerpy --network=spt_network_summerpy -p 8083:8081 enbhdautomationpractice/super-protein-tracker-ui-summerpy
+
+Tests for frontend: 
+Open in the browser this address: http://<aws_ubuntu_ip>:8081
+
