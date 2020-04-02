@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<div class="container">
+  <form #userEditForm="ngForm" autocomplete="on" (ngSubmit)="saveProteinTracker()">
+    <div>
+      <div class="form-group">
+        <label>Username</label>
+        <div id="ptRegId" class="form-control" required autofocus [attr.disabled]="true" >{{proteinTrackerReg?.id}}</div>
+      </div>
+      <div class="form-group">
+        <label>Full name</label>
+        <input [(ngModel)]="proteinTrackerReg.name" name="proteinTrackerReg.name" id="ptRegName"
+               type="text" class="form-control" required autofocus />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input [(ngModel)]="proteinTrackerReg.email" name="proteinTrackerReg.email" id="ptRegEmail"
+               type="text" class="form-control" required autofocus />
+      </div>
+      <div class="form-group">
+        <label>Current Protein Value</label>
+        <input [(ngModel)]="proteinTrackerReg.currentProteinNo" name="proteinTrackerReg.currentProteinNo" id="ptRegCurrentProteinNo"
+                class="form-control" required autofocus/>
+      </div>
+      <div class="form-group">
+        <label>Desired Protein Value</label>
+        <input [(ngModel)]="proteinTrackerReg.desiredProteinNo" name="proteinTrackerReg.desiredProteinNo" id="ptRegDesiredProteinNo"
+               type="text" class="form-control" required autofocus />
+      </div>
+      <div class="form-group">
+        <label>Registation Date</label>
+        <div id="ptRegDate" class="form-control" required autofocus>{{proteinTrackerReg?.registrationDate}}</div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-info mr-1">Save</button>
+    <button type="button" class="btn btn-danger mr-1" (click)="deleteProteinTracker(proteinTrackerReg)">Delete</button>
+    <button routerLink="/admin" class="btn btn-info mr-1">Exit</button>
+  </form>
+</div>

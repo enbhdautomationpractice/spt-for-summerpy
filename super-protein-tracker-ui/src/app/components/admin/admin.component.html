@@ -1,0 +1,38 @@
+<div class="container">
+  <table class="table table-bordered table-inverse">
+    <tr>
+      <th>Username</th>
+      <th>Full name</th>
+      <th>Email</th>
+      <th>Current Protein Value</th>
+      <th>Desired Protein Value</th>
+      <th>Registration Date</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let proteinTracker of proteinTrackers" [ngClass]="{green: proteinTracker.success}">
+      <td>
+        <a [routerLink]="['/admin/view', proteinTracker.id]">{{proteinTracker.id}}</a>
+      </td>
+      <td>
+        {{proteinTracker.name}}
+      </td>
+      <td>
+        {{proteinTracker.email}}
+      </td>
+      <td class="text-right">
+        {{proteinTracker.currentProteinNo}}
+      </td>
+      <td class="text-right">
+        {{proteinTracker.desiredProteinNo}}
+      </td>
+      <td class="text-right">
+        {{proteinTracker.registrationDate}}
+      </td>
+      <td>
+        <div>
+          <button type="button" class="btn btn-danger" (click)="deleteProteinTracker(proteinTracker)">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

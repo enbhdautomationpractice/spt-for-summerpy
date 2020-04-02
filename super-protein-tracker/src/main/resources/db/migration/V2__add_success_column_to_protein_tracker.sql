@@ -1,0 +1,1 @@
+ALTER TABLE protein_tracker ADD success BOOLEAN;

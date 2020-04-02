@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div id="navbarSupportedContent">
+    <ul class="nav navbar-nav text-info">
+      <li class="nav-link">
+        <a class="text-info" id="home_nav" [routerLink]="['/home']" routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact:true}">Home</a>
+      </li>
+      <li class="nav-link">
+        <a class="text-info" id="users_nav" [routerLink]="['/users']" routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact:true}">Users</a>
+      </li>
+      <li class="nav-link">
+        <a class="text-info" id="admin_nav" [routerLink]="['/admin']" routerLinkActive="active"
+           [routerLinkActiveOptions]="{exact:true}" *ngIf="auth.isAdmin()">Admin</a>
+      </li>
+      <li class="nav-link">
+        <a *ngIf="!auth.isAuthenticated()" id="login_nav" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+      </li>
+      <li class="nav-link">
+        <a *ngIf="auth.isAuthenticated()" id="logout_nav" [routerLink]="['/#']" (click)="logout()">Logout {{auth.getCurrentUser()}}</a>
+      </li>
+    </ul>
+  </div>
+</nav>
